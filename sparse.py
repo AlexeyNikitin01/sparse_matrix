@@ -43,4 +43,3 @@ class IncreaseOnVector(OperationWithMatrix):
                 result += value_vector * segment_values[j]
             vector_result.append(result)
         return vector_result
-
