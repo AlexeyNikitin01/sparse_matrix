@@ -1,40 +1,59 @@
-class Matrix:
+from math import sqrt
+
+
+class SparseMatrix:
     PATH_TO_FILE = 'MATRIX.txt'
+    PATH_TO_FILE_TWO = 'MATRIX_TWO.txt'
 
     def __init__(self):
-        self._sparse_matrix = None
-        with open('MATRIX.txt') as f:
-            self._sparse_matrix = [list(map(int, row.split())) for row in f.readlines()]
+        pass
 
-        self.rows_pointers = [0, ]
-        self.values = []
-        self.cols = []
+    def __str__(self):
+        pass
 
-        self.vector_result = []
+    def __repr__(self):
+        pass
 
-    def process_matrix(self):
-        count_for_pointers = 0
-        for i in range(len(self._sparse_matrix)):
-            for j in range(len(self._sparse_matrix[i])):
-                if self._sparse_matrix[i][j]:
-                    self.values.append(self._sparse_matrix[i][j])
-                    self.cols.append(j)
-                    count_for_pointers += 1
-            self.rows_pointers.append(count_for_pointers)
+    def is_sparse(self) -> bool:
+        # return sqrt(number_rows * number_cols) > len(self.values)
+        pass
+
+    def matrix_add(self): # -> SparseMatrix
+        # сложение двух матриц
+        return
 
     def increase_on_vector(self, vector_b: list) -> list:
-        self.process_matrix()
-        assert max(self.cols) + 1 == len(vector_b)
+        # умноженеие на вектор
+        pass
 
-        for i in range(len(self.rows_pointers) - 1):
-            segment_pointers = self.rows_pointers[i:i + 2]
-            row_pointers = segment_pointers[1] - segment_pointers[0]
-            result = 0
-            for j in range(row_pointers):
-                segment_cols = self.cols[segment_pointers[0]:segment_pointers[1]]
-                segment_values = self.values[segment_pointers[0]:segment_pointers[1]]
-                value_vector = vector_b[segment_cols[j]]
-                result += value_vector * segment_values[j]
-            self.vector_result.append(result)
+    def to_matrix(self) -> list[list[float]]:
+        # Создает обычную матрицу из разреженной
+        pass
 
-        return self.vector_result
+    @staticmethod
+    def from_file(path_to_file):
+        with open(path_to_file) as f:
+            val = []
+            cols = []
+            rows_pointers = [0, ]
+            point = 0
+            for line in f:
+                num = line.strip().split()
+                for count, j in enumerate(num):
+                    if int(j) > 0:
+                        val.append(int(j))
+                        cols.append(count)
+                        point += 1
+                rows_pointers.append(point)
+        SparseMatrix._sparse_matrix = [val, cols, rows_pointers]
+        return SparseMatrix._sparse_matrix
+
+    @staticmethod
+    def from_matrix(matrix): # -> SparseMatrix
+        # Создает разреженную матрицу из обычной
+        pass
+
+    @staticmethod
+    def identity(n): # -> SparseMatrix
+        # Создает единичную матрицу NxN
+        pass
