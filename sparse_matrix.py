@@ -1,12 +1,13 @@
-from math import sqrt
-
-
 class SparseMatrix:
     PATH_TO_FILE = 'MATRIX.txt'
     PATH_TO_FILE_TWO = 'MATRIX_TWO.txt'
 
-    def __init__(self):
-        pass
+    def __init__(self, val, cols, rows_pointers, size_mat_col, size_mat_row):
+        self._val = val
+        self._cols = cols
+        self._rows_pointers = rows_pointers
+        self.size_mat_col = size_mat_col
+        self.size_mat_row = size_mat_row
 
     def __str__(self):
         pass
@@ -22,10 +23,6 @@ class SparseMatrix:
         # сложение двух матриц
         return
 
-    def increase_on_vector(self, vector_b: list) -> list:
-        # умноженеие на вектор
-        pass
-
     def to_matrix(self) -> list[list[float]]:
         # Создает обычную матрицу из разреженной
         pass
@@ -33,20 +30,23 @@ class SparseMatrix:
     @staticmethod
     def from_file(path_to_file):
         with open(path_to_file) as f:
-            val = []
-            cols = []
-            rows_pointers = [0, ]
-            point = 0
+            size_mat_col = 0
+            size_mat_row = 0
+            _val = []
+            _cols = []
+            _rows_pointers = [0, ]
+            pointer = 0
             for line in f:
-                num = line.strip().split()
-                for count, j in enumerate(num):
-                    if int(j) > 0:
-                        val.append(int(j))
-                        cols.append(count)
-                        point += 1
-                rows_pointers.append(point)
-        SparseMatrix._sparse_matrix = [val, cols, rows_pointers]
-        return SparseMatrix._sparse_matrix
+                row = [int(x) for x in line.strip().split()]
+                size_mat_col += 1
+                for count, val_in_line in enumerate(row):
+                    if val_in_line:
+                        _val.append(val_in_line)
+                        _cols.append(count)
+                        pointer += 1
+                _rows_pointers.append(pointer)
+            size_mat_row += max(_cols)+1
+        return SparseMatrix(_val, _cols, _rows_pointers, size_mat_col, size_mat_row)
 
     @staticmethod
     def from_matrix(matrix): # -> SparseMatrix
