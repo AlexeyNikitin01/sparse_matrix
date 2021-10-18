@@ -12,7 +12,15 @@ class SparseMatrix:
         pass
 
     def __repr__(self):
-        pass
+        internal_repr = {}
+        for i in range(len(self._rows_pointers)-1):
+            num_in_row = self._rows_pointers[i+1] - self._rows_pointers[i]
+            cols = self._cols[self._rows_pointers[i]:self._rows_pointers[i+1]]
+            values = self._values[self._rows_pointers[i]:self._rows_pointers[i+1]]
+            for j in range(num_in_row):
+                unique_index = i * self._n_cols + cols[j]
+                internal_repr[unique_index] = values[j]
+        return internal_repr
 
     def is_sparse(self) -> bool:
         # return sqrt(self.size_mat_row * self.size_mat_col) > len(self.values)
