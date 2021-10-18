@@ -1,7 +1,8 @@
 class SparseMatrix:
 
-    def __init__(self, val, cols, rows_pointers, n_cols, n_rows):
-        self._val = val
+    def __init__(self, values, cols, rows_pointers, n_cols, n_rows):
+        # link to staticmethod from_file
+        self._values = values
         self._cols = cols
         self._rows_pointers = rows_pointers
         self._n_cols = n_cols
@@ -25,19 +26,19 @@ class SparseMatrix:
     def from_file(path_to_file):
         with open(path_to_file) as f:
             n_rows, n_cols = map(lambda x: int(x), f.readline().split(' '))
-            val = []
+            values = []
             cols = []
             rows_pointers = [0, ]
             pointer = 0
-            for line in f:
-                row = [int(x) for x in line.strip().split()]
+            for _ in range(n_rows):
+                row = [int(x) for x in f.readline().strip().split()]
                 for col in range(n_cols):
-                    if row[col]:
-                        val.append(row[col])
+                    if row[col] != 0:
+                        values.append(row[col])
                         cols.append(col)
                         pointer += 1
                 rows_pointers.append(pointer)
-        return SparseMatrix(val, cols, rows_pointers, n_cols, n_rows)
+        return SparseMatrix(values, cols, rows_pointers, n_cols, n_rows)
 
     @staticmethod
     def from_matrix(matrix):  # -> SparseMatrix
