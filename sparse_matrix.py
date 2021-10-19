@@ -9,7 +9,19 @@ class SparseMatrix:
         self._n_rows = n_rows
 
     def __str__(self):
-        pass
+        string_repr = []
+        for i in range(self._n_rows):
+            intermediate_result = []
+            cols = self._cols[self._rows_pointers[i]:self._rows_pointers[i + 1]]
+            values = self._values[self._rows_pointers[i]:self._rows_pointers[i + 1]]
+            values = iter(values)
+            for col in range(self._n_cols):
+                if col in cols:
+                    intermediate_result.append(next(values))
+                else:
+                    intermediate_result.append(0)
+            string_repr.append(intermediate_result)
+        return string_repr
 
     def __repr__(self):
         internal_repr = {}
