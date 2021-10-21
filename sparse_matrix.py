@@ -41,8 +41,19 @@ class SparseMatrix:
         return sqrt(self._n_rows * self._n_cols) > len(self._values)
 
     def to_matrix(self) -> list[list[float]]:
-        # Создает обычную матрицу из разреженной
-        pass
+        sparse_matrix = []
+        for i in range(self._n_rows):
+            row = []
+            cols = self._cols[self._rows_pointers[i]:self._rows_pointers[i+1]]
+            values = self._values[self._rows_pointers[i]:self._rows_pointers[i+1]]
+            values = iter(values)
+            for col in range(self._n_cols):
+                if col in cols:
+                    row.append(next(values))
+                else:
+                    row.append(0)
+            sparse_matrix.append(row)
+        return sparse_matrix
 
     @staticmethod
     def from_file(path_to_file):
