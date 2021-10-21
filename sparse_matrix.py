@@ -70,4 +70,8 @@ class SparseMatrix:
     @staticmethod
     def identity(n):  # -> SparseMatrix
         # Создает единичную матрицу NxN
-        pass
+        n_rows, n_cols = n, n
+        values = [1]*n
+        cols = [x for x in range(n)]
+        rows_pointers = [x for x in range(n+1)]
+        return SparseMatrix(values, cols, rows_pointers, n_cols, n_rows)

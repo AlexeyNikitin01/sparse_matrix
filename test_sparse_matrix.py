@@ -25,6 +25,14 @@ class MyTestCase(unittest.TestCase):
         sparse_matrix = SparseMatrix.from_file('MATRIX.txt')
         self.assertEqual(sparse_matrix.is_sparse(), False)
 
+    def test_identity(self):
+        identity_matrix = SparseMatrix.identity(4)
+        self.assertEqual(identity_matrix._n_cols, 4)
+        self.assertEqual(identity_matrix._n_rows, 4)
+        self.assertEqual(identity_matrix._cols, [0, 1, 2, 3])
+        self.assertEqual(identity_matrix._values, [1, 1, 1, 1])
+        self.assertEqual(identity_matrix._rows_pointers, [0, 1, 2, 3, 4])
+
 
 if __name__ == '__main__':
     unittest.main()
