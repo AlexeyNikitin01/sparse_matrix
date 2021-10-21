@@ -21,6 +21,10 @@ class MyTestCase(unittest.TestCase):
         sparse_matrix = SparseMatrix.from_file('MATRIX.txt')
         self.assertEqual(sparse_matrix.__str__(), [[0, 0, 1, 1], [1, 0, 0, 0], [1, 0, 3, 0], [0, 1, 0, 0]])
 
+    def test_is_sparse(self):
+        sparse_matrix = SparseMatrix.from_file('MATRIX.txt')
+        self.assertEqual(sparse_matrix.is_sparse(), False)
+
 
 if __name__ == '__main__':
     unittest.main()

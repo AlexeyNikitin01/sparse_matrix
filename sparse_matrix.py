@@ -1,3 +1,6 @@
+from math import sqrt
+
+
 class SparseMatrix:
 
     def __init__(self, values, cols, rows_pointers, n_cols, n_rows):
@@ -35,8 +38,7 @@ class SparseMatrix:
         return internal_repr
 
     def is_sparse(self) -> bool:
-        # return sqrt(self.size_mat_row * self.size_mat_col) > len(self.values)
-        pass
+        return sqrt(self._n_rows * self._n_cols) > len(self._values)
 
     def to_matrix(self) -> list[list[float]]:
         # Создает обычную матрицу из разреженной
