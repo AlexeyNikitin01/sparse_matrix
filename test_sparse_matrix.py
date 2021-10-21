@@ -46,6 +46,13 @@ class MyTestCase(unittest.TestCase):
         sparse_matrix = SparseMatrix.from_file('MATRIX.txt')
         self.assertEqual(sparse_matrix.to_matrix(), [[0, 0, 1, 1], [1, 0, 0, 0], [1, 0, 3, 0], [0, 1, 0, 0]])
 
+    def test_add(self):
+        sparse_matrix_2 = SparseMatrix.from_file('MATRIX_2.txt')
+        sparse_matrix = SparseMatrix.from_file('MATRIX.txt')
+        # sparse_matrix.__add__ -> add_rows_pointers, add_values, add_cols
+        self.assertEqual(sparse_matrix.__add__(sparse_matrix_2),
+                         ([0, 2, 3, 5, 7], [1, 2, 2, 2, 3, 1, 1], [2, 3, 0, 0, 2, 1, 3]))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -37,6 +37,37 @@ class SparseMatrix:
                 internal_repr[unique_index] = values[j]
         return internal_repr
 
+    def __add__(self, other):
+        sparse_matrix_2 = other
+        assert (sparse_matrix_2._n_cols == self._n_cols) and \
+               (sparse_matrix_2._n_rows == self._n_rows)
+        add_rows_pointers = [0, ]
+        add_values = []
+        add_cols = []
+        pointer = 0
+        for i in range(self._n_rows):
+            values_2 = sparse_matrix_2._values[sparse_matrix_2._rows_pointers[i]:sparse_matrix_2._rows_pointers[i+1]]
+            values_2 = iter(values_2)
+            values_1 = self._values[self._rows_pointers[i]:self._rows_pointers[i+1]]
+            values_1 = iter(values_1)
+            cols_2 = sparse_matrix_2._cols[sparse_matrix_2._rows_pointers[i]:sparse_matrix_2._rows_pointers[i+1]]
+            cols_1 = self._cols[self._rows_pointers[i]:self._rows_pointers[i+1]]
+            for col in range(self._n_cols):
+                if col in cols_1 and col in cols_2:
+                    add_values.append(next(values_1) + next(values_2))
+                    add_cols.append(col)
+                    pointer += 1
+                elif col in cols_1:
+                    add_values.append(next(values_1))
+                    add_cols.append(col)
+                    pointer += 1
+                elif col in cols_2:
+                    add_values.append(next(values_2))
+                    add_cols.append(col)
+                    pointer += 1
+            add_rows_pointers.append(pointer)
+        return add_rows_pointers, add_values, add_cols
+
     def is_sparse(self) -> bool:
         return sqrt(self._n_rows * self._n_cols) > len(self._values)
 
