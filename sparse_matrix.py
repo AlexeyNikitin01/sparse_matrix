@@ -28,10 +28,10 @@ class SparseMatrix:
 
     def __repr__(self):
         internal_repr = {}
-        for i in range(len(self._rows_pointers)-1):
-            num_in_row = self._rows_pointers[i+1] - self._rows_pointers[i]
-            cols = self._cols[self._rows_pointers[i]:self._rows_pointers[i+1]]
-            values = self._values[self._rows_pointers[i]:self._rows_pointers[i+1]]
+        for i in range(len(self._rows_pointers) - 1):
+            num_in_row = self._rows_pointers[i + 1] - self._rows_pointers[i]
+            cols = self._cols[self._rows_pointers[i]:self._rows_pointers[i + 1]]
+            values = self._values[self._rows_pointers[i]:self._rows_pointers[i + 1]]
             for j in range(num_in_row):
                 unique_index = i * self._n_cols + cols[j]
                 internal_repr[unique_index] = values[j]
@@ -63,15 +63,26 @@ class SparseMatrix:
         return SparseMatrix(values, cols, rows_pointers, n_cols, n_rows)
 
     @staticmethod
-    def from_matrix(matrix):  # -> SparseMatrix
-        # Создает разреженную матрицу из обычной
-        pass
+    def from_matrix(matrix):
+        n_rows = len(matrix)
+        n_cols = len(matrix[0])
+        values = []
+        cols = []
+        rows_pointers = [0, ]
+        pointer = 0
+        for row in range(n_rows):
+            for col in range(n_cols):
+                if matrix[row][col]:
+                    values.append(matrix[row][col])
+                    cols.append(col)
+                    pointer += 1
+            rows_pointers.append(pointer)
+        return SparseMatrix(values, cols, rows_pointers, n_cols, n_rows)
 
     @staticmethod
-    def identity(n):  # -> SparseMatrix
-        # Создает единичную матрицу NxN
+    def identity(n):
         n_rows, n_cols = n, n
-        values = [1]*n
+        values = [1] * n
         cols = [x for x in range(n)]
-        rows_pointers = [x for x in range(n+1)]
+        rows_pointers = [x for x in range(n + 1)]
         return SparseMatrix(values, cols, rows_pointers, n_cols, n_rows)

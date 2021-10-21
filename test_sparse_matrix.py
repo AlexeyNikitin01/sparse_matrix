@@ -33,6 +33,15 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(identity_matrix._values, [1, 1, 1, 1])
         self.assertEqual(identity_matrix._rows_pointers, [0, 1, 2, 3, 4])
 
+    def test_from_matrix(self):
+        matrix = [[0, 0, 1, 1], [1, 0, 0, 0], [1, 0, 3, 0], [0, 1, 0, 0]]
+        sparse_matrix = SparseMatrix.from_matrix(matrix)
+        self.assertEqual(sparse_matrix._n_cols, 4)
+        self.assertEqual(sparse_matrix._n_rows, 4)
+        self.assertEqual(sparse_matrix._values, [1, 1, 1, 1, 3, 1])
+        self.assertEqual(sparse_matrix._cols, [2, 3, 0, 0, 2, 1])
+        self.assertEqual(sparse_matrix._rows_pointers, [0, 2, 3, 5, 6])
+
 
 if __name__ == '__main__':
     unittest.main()
